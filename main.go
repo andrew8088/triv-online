@@ -1,7 +1,9 @@
 package main
 
 import (
+	_ "github.com/heroku/x/hmetrics/onload"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -13,8 +15,15 @@ func handleSlashCommand(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+
 	http.HandleFunc("/", handleSlashCommand)
-	if err := http.ListenAndServe(":8088", nil); err != nil {
+
+	if err := http.ListenAndServe(":" + port, nil); err != nil {
 		panic(err)
 	}
 }
