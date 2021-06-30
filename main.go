@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "github.com/heroku/x/hmetrics/onload"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -23,7 +24,7 @@ func main() {
 
 	http.HandleFunc("/", handleSlashCommand)
 
-	if err := http.ListenAndServe(":" + port, nil); err != nil {
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		panic(err)
 	}
 }
