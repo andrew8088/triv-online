@@ -5,14 +5,14 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 )
 
+func handleOk(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("ok"))
+}
+
 func handleSlashCommand(w http.ResponseWriter, r *http.Request) {
-	message := r.URL.Path
-	message = strings.TrimPrefix(message, "/")
-	message = "hello " + message
-	w.Write([]byte(message))
+	w.Write([]byte("ok, let's get the game started!"))
 }
 
 func main() {
@@ -22,7 +22,9 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	http.HandleFunc("/", handleSlashCommand)
+	http.HandleFunc("/command", handleSlashCommand)
+
+	http.HandleFunc("/", handleOk)
 
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		panic(err)
