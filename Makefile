@@ -1,7 +1,7 @@
-build: bin/triv-online
+build: main.go
 	go build  -o bin/triv-online -v .
 
 run: build
-	PORT=8088 bin/triv-online
+	./run.sh
 
 default: build
