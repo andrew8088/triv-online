@@ -11,7 +11,7 @@ func handleOk(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("ok"))
 }
 
-func handleSlashCommand(w http.ResponseWriter, r *http.Request) {
+func handleTrivSlashCommand(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("ok, let's get the game started!"))
 }
 
@@ -22,7 +22,7 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	http.HandleFunc("/command", handleSlashCommand)
+	http.HandleFunc("/command/triv", handleTrivSlashCommand)
 
 	http.HandleFunc("/", handleOk)
 
