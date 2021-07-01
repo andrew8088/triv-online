@@ -55,7 +55,7 @@ func generateModalRequest() slack.ModalViewRequest {
 func handleTrivSlashCommand(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("handling slash command");
 
-	signingSecret := os.Getenv('SLACK_SIGNING_SECRET');
+	signingSecret := os.Getenv("SLACK_SIGNING_SECRET");
 
 	if signingSecret == "" {
 		fmt.Println("no signingSecret found")
