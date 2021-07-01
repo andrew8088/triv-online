@@ -53,16 +53,26 @@ func generateModalRequest() slack.ModalViewRequest {
 }
 
 func handleTrivSlashCommand(w http.ResponseWriter, r *http.Request) {
-	verifier, err := slack.NewSecretsVerifier(r.Header, os.Getenv("SLACK_SIGNING_SECRET"))
+	fmt.Printf("handling slash command");
+
+	signingSecret := os.Getenv('SLACK_SIGNING_SECRET');
+
+	if signingSecret == "" {
+		fmt.Println("no signingSecret found")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	verifier, err := slack.NewSecretsVerifier(r.Header, signingSecret)
 
 	if err != nil {
-		fmt.Printf("Error creating verifier: %s", err)
+		fmt.Printf("Error creating verifier: %s\n", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	if err = verifier.Ensure(); err != nil {
-		fmt.Printf("Error ensuring request: %s", err)
+		fmt.Printf("Error ensuring request: %s\n", err)
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
@@ -70,7 +80,7 @@ func handleTrivSlashCommand(w http.ResponseWriter, r *http.Request) {
 	r.Body = ioutil.NopCloser(io.TeeReader(r.Body, &verifier))
 	s, err := slack.SlashCommandParse(r)
 	if err != nil {
-		fmt.Printf("Error parsing slash command: %s", err)
+		fmt.Printf("Error parsing slash command: %s\n", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -82,7 +92,7 @@ func handleTrivSlashCommand(w http.ResponseWriter, r *http.Request) {
 	modalRequest := generateModalRequest()
 	_, err = api.OpenView(s.TriggerID, modalRequest)
 	if err != nil {
-		fmt.Printf("Error opening view: %s", err)
+		fmt.Printf("Error opening view: %s\n", err)
 	}
 }
 
