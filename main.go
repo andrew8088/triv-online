@@ -53,7 +53,7 @@ func generateModalRequest() slack.ModalViewRequest {
 }
 
 func handleTrivSlashCommand(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("handling slash command");
+	fmt.Printf("handling slash command\n");
 
 	signingSecret := os.Getenv("SLACK_SIGNING_SECRET");
 
@@ -71,11 +71,11 @@ func handleTrivSlashCommand(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = verifier.Ensure(); err != nil {
-		fmt.Printf("Error ensuring request: %s\n", err)
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
+	// if err = verifier.Ensure(); err != nil {
+	// 	fmt.Printf("Error ensuring request: %s\n", err)
+	// 	w.WriteHeader(http.StatusUnauthorized)
+	// 	return
+	// }
 
 	r.Body = ioutil.NopCloser(io.TeeReader(r.Body, &verifier))
 	s, err := slack.SlashCommandParse(r)
