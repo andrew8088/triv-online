@@ -36,11 +36,29 @@ app.view("create-game-view1", async ({ ack, body, view, client }) => {
   await ack();
 
   const user = body.user.id;
-  const game = view.state.values.game_name_input;
+  const { host_block, game_name_block, players_block, arrange_teams_block } = view.state.values;
+
+  const host = host_block.host_input.selected_user;
+  const game = game_name_block.game_name_input.value;
+  const players = players_block.players_input.selected_users || [];
+  const arrangeTeams = arrange_teams_block.arrange_teams_input.selected_option?.value;
+
+  console.log(
+    JSON.stringify(
+      {
+        host,
+        game,
+        players,
+        arrangeTeams,
+      },
+      null,
+      "\t",
+    ),
+  );
 
   await client.chat.postMessage({
     channel: user,
-    text: `Thanks! Starting "${game}"`,
+    text: `Thanks! Starting "${game}" with ${players.map((p) => `<@${p}>`).join(", ")} (arrangement: ${arrangeTeams})`,
   });
 });
 

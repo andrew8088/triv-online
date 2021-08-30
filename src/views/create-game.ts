@@ -13,6 +13,7 @@ const getCreateGameView = (callback_id: string): View => ({
   blocks: [
     {
       type: "input",
+      block_id: "host_block",
       label: {
         type: "plain_text",
         text: "Select a host",
@@ -24,15 +25,15 @@ const getCreateGameView = (callback_id: string): View => ({
           text: "Select a user",
           emoji: true,
         },
-        action_id: "users_select-action",
+        action_id: "host_input",
       },
     },
     {
       type: "input",
-      block_id: "game_name_input",
+      block_id: "game_name_block",
       element: {
         type: "plain_text_input",
-        action_id: "sl_input",
+        action_id: "game_name_input",
       },
       label: {
         type: "plain_text",
@@ -41,6 +42,7 @@ const getCreateGameView = (callback_id: string): View => ({
     },
     {
       type: "input",
+      block_id: "players_block",
       element: {
         type: "multi_users_select",
         placeholder: {
@@ -48,7 +50,7 @@ const getCreateGameView = (callback_id: string): View => ({
           text: "Select users",
           emoji: true,
         },
-        action_id: "multi_users_select-action",
+        action_id: "players_input",
       },
       label: {
         type: "plain_text",
@@ -58,6 +60,7 @@ const getCreateGameView = (callback_id: string): View => ({
     },
     {
       type: "input",
+      block_id: "arrange_teams_block",
       element: {
         type: "radio_buttons",
         options: [
@@ -67,7 +70,7 @@ const getCreateGameView = (callback_id: string): View => ({
               text: "I will arrange the teams",
               emoji: true,
             },
-            value: "value-0",
+            value: "manual",
           },
           {
             text: {
@@ -75,10 +78,10 @@ const getCreateGameView = (callback_id: string): View => ({
               text: "Arrange the teams for me",
               emoji: true,
             },
-            value: "value-2",
+            value: "auto",
           },
         ],
-        action_id: "radio_buttons-action",
+        action_id: "arrange_teams_input",
       },
       label: {
         type: "plain_text",
